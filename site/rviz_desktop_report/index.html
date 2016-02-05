@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+	<title>Report - Remote Visualisation</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">Remote Visualisation</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">Home</a>
+                    </li>
+                
+                
+                
+                    <li class="active">
+                        <a href="./">Report</a>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li >
+                        <a rel="next" href="..">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li class="disabled">
+                        <a rel="prev" >
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#introduction">Introduction</a></li>
+        
+    
+        <li class="main "><a href="#the-alarik-desktop-infrastructure">The Alarik Desktop infrastructure</a></li>
+        
+            <li><a href="#lessons-learned">Lessons learned</a></li>
+        
+    
+        <li class="main "><a href="#the-snic-et-prototype-system">The SNIC ET Prototype system</a></li>
+        
+            <li><a href="#virtual-environment-for-sharing-gpus">Virtual environment for sharing GPU:s</a></li>
+        
+            <li><a href="#xeon-processors-with-built-in-graphics">Xeon processors with built-in graphics</a></li>
+        
+            <li><a href="#consumer-grade-graphics-solution">Consumer grade graphics solution</a></li>
+        
+    
+        <li class="main "><a href="#remote-desktop-solutions">Remote desktop solutions</a></li>
+        
+            <li><a href="#thinlinc">Thinlinc</a></li>
+        
+            <li><a href="#nice-dcv">Nice DCV</a></li>
+        
+            <li><a href="#microsoft-remote-desktop-remotefx">Microsoft Remote Desktop / RemoteFX</a></li>
+        
+            <li><a href="#xenapp-xendesktop">XenApp / XenDesktop</a></li>
+        
+    
+        <li class="main "><a href="#prototype-desktop-infrastructure">Prototype Desktop Infrastructure</a></li>
+        
+            <li><a href="#prototype-setup">Prototype setup</a></li>
+        
+            <li><a href="#xenserver-65-hypervisor">XenServer 6.5 Hypervisor</a></li>
+        
+            <li><a href="#installing-nvidia-drivers-on-virtual-machine">Installing NVIDIA drivers on virtual machine</a></li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<p>% A next generation desktop infrastructure for HPC
+% Jonas Lindemann;Anders Follin
+% 2016-01-26</p>
+<h1 id="introduction">Introduction</h1>
+<p>During the 2013-2015 Lunarc has been operating a desktop infrastructure on the Alarik resource, to evaluate if this could complement the existing terminal-based environment. This environment have been continously been in production since mid 2013 and been a great success among the users. We currently have approximately between 30-50 active users in this environment.</p>
+<p>A prototype system was procured to test and develop ideas for a more rich and scalable SNIC desktop architecture. The prototype was installed in the beginning of 2015 and will be the blueprint for the upcoming Aurora desktop infrastructure.</p>
+<h1 id="the-alarik-desktop-infrastructure">The Alarik Desktop infrastructure</h1>
+<p>The desktop infrastructure deployed on Alarik consists of a front-end server with a Thinlinc server, 2 back-end nodes acting as desktop servers (Thinlinc agents). The Thinlinc server will assign users to one of the back-end servers depending on the current load of the back-end server. </p>
+<p>The back-end servers only support 2D graphics or emulated 3D graphics. To support applications requiring hardware accelerated graphics, 2 additional servers with NVIDIA Quadro 5000 cards provide this functionality.</p>
+<p>Hardware graphics support is implemented using the VirtualGL protocol and is setup for specific applications provided throug a customised menu in desktop environment. Running such an application will connect to the backend graphics server using a special protocol, vglconnect, which will stream the accelerated application from the back-end server.</p>
+<p><img alt="Alarik Desktop Architecture" src="../images/alarik_desktop_architecture.svg" /></p>
+<h2 id="lessons-learned">Lessons learned</h2>
+<p>In general the implemented infrastructure have worked very well and have had no major issues. However, some lessons have been learnt during the use of this setup.</p>
+<ul>
+<li>The desktop infrastructure can scale by adding server, but a session is assigned to a specific back-end server and shares the resources with other users on the same resource.</li>
+<li>Resource limits are not easily enforced. It is possible for users with large visualisation needs to overallocate memory and the user experience of other users on the same node will suffer severely.</li>
+<li>It is difficult to provide users with exclusive access to dedicated server for running graphical applications.</li>
+<li>VirtualGL has to be configure on a per application basis and access to the graphics card is shared, reducing the performance depending on the number of users using the graphics card at the same time.</li>
+<li>Supporting the desktop system is not the same as supporting an HPC resource. Tools for monitoring desktop sessions needs to be developed to provide a smooth user experience.</li>
+<li>Existing authentication solutions must be taken into account when implementing a desktop infrastructure. The One Time Password system used at Lunarc needed to be adjusted to be able to used with Thinlinc to support the re-use of OTP-tokens.</li>
+<li>There is a reliance on commercial software, such as Thinlinc, which can be a risk as well as an advantage. </li>
+</ul>
+<h1 id="the-snic-et-prototype-system">The SNIC ET Prototype system</h1>
+<p>To be able to try different desktop solutions and configurations a prototype system was procured during end of 2014. The procured hardware was chosen in a way that we could evaluate many of the availble solutions as possible. </p>
+<p>The final hardware consisted of:</p>
+<ul>
+<li>XenServer with NVIDIA Grid K1/K2 cards </li>
+<li>48 GB Memory</li>
+<li>2 x 2620v3 Xeon Processors at 2.4 GHz</li>
+<li>1 x NVIDIA Grid K1 card</li>
+<li>1 x NVIDIA Grid K2 card</li>
+<li>Storage array with 6 x 1 TB 2.5 inch drives</li>
+<li>Server with consumer grade NVIDIA cards</li>
+<li>64 GB Memory</li>
+<li>2 x 2620v3 Xeon Processors at 2.4 GHz</li>
+<li>2 x NVIDIA Grid GTX 980</li>
+<li>Server with Xeon processor with built-in graphics</li>
+<li>32 GB Memory</li>
+<li>1 x Xeon E3-1268L</li>
+<li>Infiniband switch</li>
+<li>Gigabit switch</li>
+</ul>
+<h2 id="virtual-environment-for-sharing-gpus">Virtual environment for sharing GPU:s</h2>
+<p>An interesting development is the ability for virtual environments to provide access to hardware based graphics acceleration to GPU-nodes. Sharing can be done using 2 methods. In the first method, a part of a GPU is shared with a virtual machine. This is often called virtual GPU or vGPU. Similar to the concept of virtual CPU or vCPU in standard virtual environments. The method is currently not well supported for Linux based virtual machines. In the second method, an entire GPU is shared with a virtual machine. The address space of the GPU is passed-through to the virtual machine. The method is often called pass-through GPU.</p>
+<p>For Windows based virtual machines the vGPU concept works well and the RemoteFX protocol and client can be used to access the accelerated desktop. Performance is good and the limiting factor here is the network-bandwidth to the client application. The problem with this approach is to find a way of integrating Windows support in a SNIC desktop infrastructure. This issue is covered more in the following sections.</p>
+<p>Passing through GPU:s to Linux based virtual machines works well using XenServer as long as a generic Linux is selected when creating the virtual machine. If a supported Linux distribution is selected pass-through is disabled. To be able to take advantage of the GPU the NVIDIA driver has to be installed on the virtual machine and configured for desktop use. As the pass-through GPU does not provide a display in a normal sense. Access to acceleration must be provided through VirtualGL or similar methods of capturing the image stream from the GPU. We have succesfully tested CentOS 7 based virtual machines with pass-through GPU.</p>
+<p>Using the installed K1/K2 cards from NVIDIA the prototype can provide 6 (4+2) pass-through GPU:s to Linux based virtual machines. For moderate needs the K2 card can be replaced with a K1 card and the soluion can provide 8 Linux based virtual machines with accelerated graphics. If vGPU gets better Linux support a single XenServer can provide up to 32 virtual machines with accelerated graphics.</p>
+<h2 id="xeon-processors-with-built-in-graphics">Xeon processors with built-in graphics</h2>
+<p>Another interesting development is the introduction of built-in graphics in Xeon server processors. Previously Intel support for built-in graphics was limited to desktop machines and laptops, making it difficult to provide a solution that can be used in a data center or HPC context. </p>
+<p>Intel now have several Xeon server processors with built-in graphics with the Xeon E3-1200 family. One of the servers in the prototype uses a E3-1268L processor with built-in graphics. These processors are often provided in a small formfactors, enabling high-density solutions with supporting accelerated graphics. </p>
+<p>The graphics performance of these processors are limited to low-end graphics acceleration, but could be a solution for moderate graphics need. </p>
+<h2 id="consumer-grade-graphics-solution">Consumer grade graphics solution</h2>
+<p>For enterprise and high-end graphics, NVIDIA provides the Quadro series of graphics cards. These are expensive cards often tailored for enterprise applications. An idea we discussed in this project, was to evaluate the use of consumer grade graphics cards such as the NVIDIA GTX 980 to provide high-end graphics performance to a lower cost. A machine with 2 GTX 980 cards where installed in a standard rack-mountable workstation. The performance is very good and they can provide an alternative to the Quadro cards. However, the problem with the consumer cards is that they are designed to be actively cooled with a built-in fan, limiting its use in high-density deployment.  </p>
+<h1 id="remote-desktop-solutions">Remote desktop solutions</h1>
+<p>Unix and Linux have since many years been able to provide remote desktop services using the X11 protocol. However, the X11 protocol requires the user to install a X11 server on the client system, which can be very complicated and not well supported on all platforms. Also, the protocol itself is not inherintly secure and to use it securely it has to be tunneled or used through a VPN, increasing the complexity of using this solution. </p>
+<p>A a more platform independent solution is Virtual Network Computer or VNC. This technology uses the Remote Frame Buffer protocol or RFB. The technology relays mouse and keyboard event to a remote computer and transfers updated portions of the frame buffer over the network. VNC is open source and has spawned several projects providing different implementations of the protocol. By default the VNC implementation uses a unsecure authentication mechanism, but many of the VNC projects add an additional security layer either by tunneling through SSH or implementing its own security layer.</p>
+<p>There also exists several proprietary solutions as well implementing their own protocols and authentication. In this project we have evaluated some of these protocols to see what benefits and limitations they provide.  </p>
+<h2 id="thinlinc">Thinlinc</h2>
+<p>ThinLinc is a VNC implementation from a Swedish company, Cendio. The ThinLinc solution include both a native client for Mac OS X, Linux and Windows and server side components. </p>
+<p>The server side part of ThinLinc can be used to implement a single server solution as well as scalable solution over several servers (agents). The main server load balances desktop sessions over all agents depending on the current load of the agent server.</p>
+<p>One of the biggest benefits of using ThinLinc is their support of native, easy to use, clients for all major platforms. With a simple one-click installer the client can be installed on all major platforms.</p>
+<h2 id="nice-dcv">Nice DCV</h2>
+<p>Desktop Cloud Visualisation, DCV, from NICE is a proprietary solution and protocol for providing remote desktop services. DCV supports hardware acceleration using NVIDIA GRID technologies as well as fully supporting hardware acceleration under Windows as well as Linux. </p>
+<p>The server side is built on VNC with custom additions for supporting hardware accelerated graphics. The DCV server can also operate in different modes. </p>
+<ul>
+<li>Pass-through mode supporting a single VM with a passthrough GPU</li>
+<li>XenServer 6.x support vGPUs</li>
+<li>Standalone server with GPU.</li>
+</ul>
+<p>The benefits of NICE DCV is the support of multiple OS application servers, enabling users to run hardware accelerated Windows and Linux applications. When evaluating DCV, it was not clear how it's security framework can integrate in a HPC Linux environment. Does it support PAM-modules and integration of external authentication protcols? Pricing of the product is also quite high compared to the Thinlinc solution.</p>
+<p>The NICE DCV solution was evaluated on XenServer 6.5 using the NVIDIA K1 and K2 cards. Installation was easy and it supported vGPU sharing under Windows.</p>
+<h2 id="microsoft-remote-desktop-remotefx">Microsoft Remote Desktop / RemoteFX</h2>
+<p>Microsoft have had remote desktop services built-in to the professional and enterprise offerings for a long time, with their Remote Desktop Protocol or RDP. Recently they support hardware accelererated graphics through RDP using a technology called RemoteFX. </p>
+<p>The RDP protocol in its non-accelerated form is supported from a Linux client using the rdesktop application. The RemoteFX protocol is however not yet supported. Using RDP, 2D Windows applications can be provided to a Linux based desktop environment using the rdesktop tool.</p>
+<p>The RemoteFX protocol has been evaluated on the XenServer 6.5 using the NVIDIA K1 an K2 cards and works vGPUs with a special NVIDIA driver. Performance is good enough to run high-end visualisation software and games.</p>
+<h2 id="xenapp-xendesktop">XenApp / XenDesktop</h2>
+<p>The RDP protocol was originally developed by Citrix for Microsoft as their remote desktop product Terminal Server. Citrix has continued their development of RDP and this protocol is what is used in their remote desktop/application solutions XenDesktop and XenApp. </p>
+<p>XenDesktop provides a desktop environment and XenApp is a special derivative of the XenDesktop that only provide remote access to specific graphical applications without the desktop.</p>
+<p>The XenDesktop and XenApp solutions can both work with hardware accelerated graphics natively or through vGPU on a hypervisor. Currently the major platform is Windows, but there is work on providing support for Linux based application and dekstop virtualisation.</p>
+<p>It was decided not to evaluate this solution as its support for Linux is not yet developed. </p>
+<h1 id="prototype-desktop-infrastructure">Prototype Desktop Infrastructure</h1>
+<p>The high-level goals of a next generation desktop infrastructure:</p>
+<ul>
+<li>Support allocation of desktop sessions through a resource management system such as SLURM.</li>
+<li>Provide a scalable solution that can be extended based on user demands.</li>
+<li>Create a easy to use system for users to allocate custom desktop sessions without using command line tools. </li>
+<li>Support additional OS environments such as Windows through a single unified desktop.</li>
+</ul>
+<h2 id="prototype-setup">Prototype setup</h2>
+<p>To be able to evaluate the different scenarios the prototype setup was implemented as a standard HPC cluster with commonly found services such as:</p>
+<ul>
+<li>Resource manager (rviz-intel) - SLURM for job management</li>
+<li>LDAP server (ldap1) - for user and group authentication</li>
+<li>OTP server (otp1) - for two-factor authentication (PhenixID server)</li>
+</ul>
+<p>The prototype also has 3 networks:</p>
+<ul>
+<li>External network - available on rviz-intel.</li>
+<li>Internal gigabit network - available on rviz-intel and all nodes.</li>
+<li>Infiniband network - available on all rviz-intel and all nodes.</li>
+<li>Admin network - for handling hardware interfaces.</li>
+</ul>
+<h2 id="xenserver-65-hypervisor">XenServer 6.5 Hypervisor</h2>
+<p>To be able to evaluate how hypervisors can be used to provide hardware accelerated graphics to virtual machines, the XenServer 6.5 Hypervisor was installed on the server with the NVIDIA GRID K1/K2 cards. The hypervisor was also used to provide additional services to the prototype such as LDAP and OTP services. </p>
+<p>XenServer 6.5 is able to provide GPU:s either as vGPU:s for Windows OS or using pass-trhough on Linux based distributions. To evaluate Linux support a virtual machine was created and assigned a NVIDIA K1 or K2 card. The machine was then installed with CentOS 7 as this is the OS that is most likely to be the target platform of upcoming SNIC resources.</p>
+<p><img alt="XenServer 6.5 with GPU availability" src="../images/xenserver_gpu.png" /></p>
+<p><img alt="GPU pass-through" src="../images/xenserver_gpu_assign.png" /></p>
+<h2 id="installing-nvidia-drivers-on-virtual-machine">Installing NVIDIA drivers on virtual machine</h2></div>
+            
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script>var base_url = '..';</script>
+        <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+        <script src="../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            From here you can search these documents. Enter
+                            your search terms below.
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

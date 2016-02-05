@@ -1,0 +1,5 @@
+site_name: Remote Visualisation
+pages:
+- Home: index.md
+- Report: rviz_desktop_report.md
+
