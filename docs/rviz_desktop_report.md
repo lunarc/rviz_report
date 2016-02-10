@@ -206,11 +206,19 @@ The perceived framerate on the client side is however entirely dependent on the 
 
 ## OpenGL Performance through VNC/VirtualGL
 
-NVIDIA GTX 980
-NVIDIA K1 GPU
-NVIDIA K2 GPU
+To evaluate the performance of the different hardware installed in the prototype the GpuTest (http://www.geeks3d.com/gputest/) benchmark was chosen as it can cover a range of advanced OpenGL rendering. The test were performed on a physical server equipeed with NVIDIA GTX 980 graphics cards as well as a virtual machines assigned a NVIDIA K1 and K2 GPU. To evaluate how the performance is affected by different window sizes, all benchmarks where run with 2 different window sizes, 1024x640 and 1920x1080. The results are shown in the following diagram:
 
-Bandwidth Client <-> Desktop agent <-> Graphics backend
+![GpuTest results running on different hardware](images/gputest_results.svg)
+
+It is clearly shown that the mix of hardware in the prototype can cover a wide range of visualisation needs from high-end, using the NVIDIA GTX980, to moderate, using NVIDIA K2 and low-end with NVIDIA K1. 
+
+It is also shown that window size has a large impact on the framerate of the visualisation. This effect is not visible in the network traffic between the front-end and the back-end server. The bandwidth never reaches more the 30 MB/s running between these servers as shown in the following diagram:
+
+![GpuTest results running on different hardware](images/network_bw_gtx980_1080.svg)
+
+It should also be noted that the GpuTest benchmarks provide an upper bound on advanced OpenGL rendering. Many standard scientific visualisation packages don't have these high demands on the graphics hardware and will probarbly achieve higher framerates. They often only render during user interaction. For scientific visualisation a low framerate can be tolerable compared to real-time rendering. Often the constraints when running visualisation application is not the graphics card but availble memory in the server for holding the data to be visualised.
+
+Using virtual machines with pass-through GPUs can also achieve very good performance equal to that of desktop equivalents as shown in the K1/K2 results (running on a single core virtual machine).
 
 # Managing desktop resources through SLURM
 
