@@ -224,10 +224,6 @@ Using virtual machines with pass-through GPUs can also achieve very good perform
 
 One of the problem with the desktop configuration on Alarik is that the desktop servers are shared between many users which can lead to a bad user experience when memory is overallocated by some user. Performance of the graphics backend is also shared, reducing the available GPU performance available for graphics. To solve this issue we propose to take advantage of the SLURM resource manager, so that users can request time limited sessions with required memory and GPU resources. 
 
-Ideally using SLURM for this should be as transparent for the user as possible. We have developed a special wrapper script that provides a simple user interface for the user to select walltime, memory and gpu requirements. The script will be used in conjunction with a desktop shortcut. 
-
-BILD PÅ GRÄNSNITT
-
 ## Running interactive application through SLURM
 
 SLURM has the ability to support interactive command line applications by the use of the **--pty** flag in conjunction with a bash-interpreter:
@@ -241,7 +237,34 @@ The completed approach is as follows:
  1. Wrapper script submits a placeholder job to a special desktop partition.
  1. The script then waits for a succesful job submission.
  1. The graphical application is executed using either a **SSH -X** session (non-accelerated) or a **vglconnect** session.
- 1. The PAM-module pam_slurm will check if user is allowed on the node.
- 1. The PAM-module pam_exec with a custom script will add session to the running SLURM job.
+ 1. The PAM-module **pam_slurm** will check if user is allowed on the node.
+ 1. The PAM-module **pam_exec** with a custom script will add session to the running SLURM job.
  1. The script waits for successful termination.
 
+## User interface for launching graphical applications through SLURM 
+
+Ideally using SLURM for this should be as transparent for the user as possible. To achieve this, a special wrapper script have been developed that provides a configurable user interface for the user to select walltime, memory and gpu requirements. The script will be used in conjunction with a desktop shortcut. The following bash-script shows how MATLAB can be launched through SLURM using this approach.
+
+    gfxlaunch --count 1 --vgl --partition geforce --cmd 'vglrun /sw/pkg/MATLAB/R2015b/bin/matlab -c /sw/pkg/MATLAB/R2015b/licenses/network.lic' --title 'MATLAB (SLURM/VGL)'
+    
+The script gfxlaunch can be configured using switches. The following list describes the main switches:
+
+ * **--count [number of cpus]**
+ 
+   The number of cpu:s (cores) to use for the application.
+   
+ * **--vgl** 
+ 
+   Switch activating VirtualGL support when launching the application (vglconnect)
+   
+ * **--partition [name]**
+ 
+   The partition to submit the job to.
+   
+ * **--cmd [cmd to execute]**
+ 
+   The command to start the application. if --vgl is used the application must be started with **vglrun**
+   
+ * **--title [window title]
+ 
+   Sets the title of the user interface displayed for the user.
