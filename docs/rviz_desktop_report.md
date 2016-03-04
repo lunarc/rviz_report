@@ -268,3 +268,11 @@ The script gfxlaunch can be configured using switches. The following list descri
  * **--title [window title]
  
    Sets the title of the user interface displayed for the user.
+   
+## Example session running accelerated MATLAB
+   
+![Session](images/lhpcdt-ui-07.png)
+![Session](images/lhpcdt-ui-01.png)
+![Session](images/lhpcdt-ui-02.png)
+![Session](images/lhpcdt-ui-04.png)
+![Session](images/lhpcdt-ui-05.png)
