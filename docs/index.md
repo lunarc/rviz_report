@@ -10,4 +10,4 @@ During the 2013-2015 Lunarc has been operating a desktop infrastructure on the A
 
 A prototype system was procured to test and develop ideas for a more rich and scalable SNIC desktop architecture. The prototype was installed in the beginning of 2015 and will be the blueprint for the upcoming Aurora desktop infrastructure.
 
-Version 2016-03-10
+Draft version 2016-03-10
