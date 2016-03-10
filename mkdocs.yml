@@ -1,5 +1,10 @@
-site_name: Remote Visualisation
+site_name: Next generation HPC Desktop
 pages:
-- Home: index.md
-- Report: rviz_desktop_report.md
+- Introduction: index.md
+- Alarik HPC Desktop: alarik_desktop.md
+- Prototype Hardware: prototype_hardware.md
+- Remote Desktop Solutions: remote_desktop_solutions.md
+- Prototype Desktop Infrastructure: prototype_desktop_infrastructure.md
+- Interactive applications and SLURM: interactive_slurm.md
 
+theme: readthedocs

@@ -1,17 +1,13 @@
-# Welcome to MkDocs
+# Authors
 
-For full documentation visit [mkdocs.org](http://mkdocs.org).
+**Jonas Lindemann**, Director Lunarc, jonas.lindemann@lunarc.lu.se
 
-## Commands
+**Anders Follin**, Technical Director Lunarc, anders.follin@lunarc.lu.se
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs help` - Print this help message.
+# Introduction
 
-## Project layout
+During the 2013-2015 Lunarc has been operating a desktop infrastructure on the Alarik resource, to evaluate if this could complement the existing terminal-based environment. This environment have been continously been in production since mid 2013 and been a great success among the users. We currently have approximately between 30-50 active users in this environment.
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+A prototype system was procured to test and develop ideas for a more rich and scalable SNIC desktop architecture. The prototype was installed in the beginning of 2015 and will be the blueprint for the upcoming Aurora desktop infrastructure.
+
+Version 2016-03-10
