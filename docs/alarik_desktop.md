@@ -4,7 +4,7 @@ The desktop infrastructure deployed on Alarik consists of a front-end server wit
 
 The back-end servers only support 2D graphics or emulated 3D graphics. To support applications requiring hardware accelerated graphics, 2 additional servers with NVIDIA Quadro 5000 cards provide this functionality.
 
-Hardware graphics support is implemented using the VirtualGL protocol and is setup for specific applications provided throug a customised menu in desktop environment. Running such an application will connect to the backend graphics server using a special protocol, vglconnect, which will stream the accelerated application from the back-end server.
+Hardware graphics support is implemented using the VirtualGL protocol and is setup for specific applications provided throug a customised menu in desktop environment. Running such an application will connect to the backend graphics server using the VirtualGL protocol, streaming the accelerated application from the back-end server.
 
 ![Alarik Desktop Architecture](images/alarik_desktop_architecture.svg)
 

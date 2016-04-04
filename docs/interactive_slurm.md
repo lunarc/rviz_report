@@ -8,13 +8,13 @@ SLURM has the ability to support interactive command line applications by the us
    
     $ srun --pty bash 
 
-However this environment does not provide the ability to run graphical applications in a similar way as you can when using SSH. To fully support graphical applications either through SSH or using the **vglconnect** command, the nodes in the HPC resource must be able to allow SSH session to allocated nodes. This can be enabled using the **pam_slurm** PAM module. The problem with this approach is that most of the computational effort will be performed with processes started from the SSH-session and will _not_ be accounted and controlled through SLURM. To handle this we need to add any user ssh-sessions to the same cgroup as the current SLURM job. This can be done by using an additional PAM-module, **pam_exec** which will check the user and add the session the SLURM cgroup automatically at login.
+However this environment does not provide the ability to run graphical applications in a similar way as you can when using SSH. To fully support graphical applications either through SSH or using the VirtualGL protocol remotely, the nodes in the HPC resource must be able to allow SSH session to allocated nodes. This can be enabled using the **pam_slurm** PAM module. The problem with this approach is that most of the computational effort will be performed with processes started from the SSH-session and will _not_ be accounted and controlled through SLURM. To handle this we need to add any user ssh-sessions to the same cgroup as the current SLURM job. This can be done by using an additional PAM-module, **pam_exec** which will check the user and add the session the SLURM cgroup automatically at login.
 
 The completed approach is as follows:
 
  1. Wrapper script submits a placeholder job to a special desktop partition.
  1. The script then waits for a succesful job submission.
- 1. The graphical application is executed using either a **SSH -X** session (non-accelerated) or a **vglconnect** session.
+ 1. The graphical application is executed using either a **SSH -X** session (non-accelerated) or using the VirtualGL session.
  1. The PAM-module **pam_slurm** will check if user is allowed on the node.
  1. The PAM-module **pam_exec** with a custom script will add session to the running SLURM job.
  1. The script waits for successful termination.
@@ -33,7 +33,7 @@ The script gfxlaunch can be configured using switches. The following list descri
    
  * **--vgl** 
  
-   Switch activating VirtualGL support when launching the application (vglconnect)
+   Switch activating VirtualGL support when launching the application.
    
  * **--partition [name]**
  

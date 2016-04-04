@@ -57,26 +57,13 @@ Running an OpenGL application directly on the VNC server host, requires the use 
     
 The **vglrun** command is responsible for wrapping the OpenGL calls and redirecting them to the graphics GPU. If this command is not used the OpenGL application will run using OpenGL software rendering, which can be very slow.
 
-Running an OpenGL application on a separate server with a graphics GPU requires the use of the **vglconnect** command. This command is a specialised ssh-client which sets up the extra channel required for transferring the frame buffer from the remote graphics server. 2D user interface is handled through standard X11 forwarding through SSH. A typical **vglconnect** command is shown below:
+It is also possible to run the OpenGL application on a separate server using a remote VirtualGL session, which transfers the remote frame buffer to the client machine. The VirtualGL protocol only transfers the OpenGL framebuffer. Normal 2D user interface is handled through standard X11 forwarding using SSH.
 
-    $ vglconnect rviz-geforce vglrun /opt/VirtualGL/bin/glxspheres64
-
-    VirtualGL Client 64-bit v2.4 (Build 20150126)
-    Listening for unencrypted connections on port 4242
-    Redirecting output to /home/jonas/.vgl/vglconnect-rviz-intel-:1.0.log
-
-    [VGL] NOTICE: Automatically setting VGL_CLIENT environment variable to
-    [VGL]    10.16.100.1, the IP address of your SSH client.
-    Polygons in scene: 62464 (61 spheres * 1024 polys/spheres)
-    Visual ID of window: 0xaf
-    Context is Direct
-    OpenGL Renderer: GeForce GTX 980/PCIe/SSE2
-
-The following screenshot show an example of a vglconnect session to a remote server running the glxspheres64 example application at 442 FPS.
+The following screenshot show an example of a VirtualGL session to a remote server running the glxspheres64 example application at 442 FPS.
 
 ![GPU pass-through](images/vglconnect_example.png)
 
-The performance of the OpenGL rendering in the vglconnect session is only limited by the connection between the VNC-server and the remote graphics server. Bandwidth between these servers is relatively constant if running an application that does not lock the framerate. Running applications which only update display when the user is interacting with the OpenGL view will only transfer the frame buffer during the interactionm, reducing the network traffic. 
+The performance of the OpenGL rendering in the VirtualGL session is only limited by the connection between the VNC-server and the remote graphics server. Bandwidth between these servers is relatively constant if running an application that does not lock the framerate. Running applications which only update display when the user is interacting with the OpenGL view will only transfer the frame buffer during the interactionm, reducing the network traffic. 
  
 The perceived framerate on the client side is however entirely dependent on the network connection to the VNC-server. This can lead to erratic and lagging rendering even if the underlying OpenGL hardware displays with a high framerate. Even with a low bandwidth to the client, a user is still able to do high performance visusalisation as this is still performed on the backend GPU. 
 
